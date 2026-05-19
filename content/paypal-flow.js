@@ -609,6 +609,7 @@ async function fillHostedGuestCheckout(payload = {}) {
   fillHostedInputById('billingLine1', address.street || '');
   selectHostedOptionByIdText('billingState', address.state || '');
 
+  await sleep(500);
   const clickResult = await clickHostedGenericSubmitButton(0);
   removeHostedCaptchaArtifacts();
 

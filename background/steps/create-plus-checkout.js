@@ -532,8 +532,12 @@
         }
 
         if (pageState.hostedStage === 'guest_checkout') {
+          const latestState = typeof getState === 'function' ? await getState().catch(() => ({})) : {};
           await addLog('步骤 6：检测到 PayPal hosted checkout 卡支付页，正在填写卡资料并提交...', 'info');
-          await runHostedCheckoutPayPalStep(tabId, guestProfile);
+          await runHostedCheckoutPayPalStep(tabId, {
+            ...guestProfile,
+            phone: String(latestState?.hostedCheckoutPhoneNumber || guestProfile.phone || '').trim(),
+          });
           await sleepWithStop(1500);
           continue;
         }
